@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Rental Booking System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #123458;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        h2 {
+            text-align: center;
+            color: #123458;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #123458;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #1976d2;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Vehicle Rental System</h1>
+        <p>Book Your Vehicle Easily!</p>
+    </header>
+
+    <div class="container">
+        <h2>Book a Vehicle</h2>
+
+        <form onsubmit="bookVehicle(event)">
+
+            <label>Customer Name</label>
+            <input type="text" id="name"
+                   placeholder="Enter your name" required>
+
+            <label>Email Address</label>
+            <input type="email" id="email"
+                   placeholder="Enter your email" required>
+
+            <label>Phone Number</label>
+            <input type="tel" id="phone"
+                   placeholder="Enter phone number"
+                   pattern="[0-9]{10}" required>
+
+            <label>Select Vehicle</label>
+            <select id="vehicle" required>
+                <option value="">Choose Vehicle</option>
+                <option value="Car">Car - ₹2000/day</option>
+                <option value="Bike">Bike - ₹500/day</option>
+                <option value="Van">Van - ₹3000/day</option>
+            </select>
+
+            <label>Pickup Date</label>
+            <input type="date" id="pickup" required>
+
+            <label>Return Date</label>
+            <input type="date" id="return" required>
+
+            <button type="submit">Book Now</button>
+
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <footer>
+        <p>© 2026 Vehicle Rental System</p>
+    </footer>
+
+    <script>
+        function bookVehicle(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let vehicle = document.getElementById("vehicle").value;
+            let pickup = document.getElementById("pickup").value;
+            let returning = document.getElementById("return").value;
+
+            let start = new Date(pickup + "T00:00:00");
+            let end = new Date(returning + "T00:00:00");
+
+            if (end <= start) {
+                alert("Return date must be after pickup date!");
+                return;
+            }
+
+            let days = Math.round(
+                (end - start) / (1000 * 60 * 60 * 24)
+            );
+
+            let rates = {
+                Car: 2000,
+                Bike: 500,
+                Van: 3000
+            };
+
+            let total = days * rates[vehicle];
+
+            document.getElementById("result").innerHTML =
+                "<h3>Booking Successful!</h3>" +
+                "<p>Customer: " + name + "</p>" +
+                "<p>Vehicle: " + vehicle + "</p>" +
+                "<p>Rental Days: " + days + "</p>" +
+                "<p>Total Amount: ₹" + total + "</p>";
+        }
+
+        let today = new Date();
+        let date = today.getFullYear() + "-" +
+            String(today.getMonth() + 1).padStart(2, "0") + "-" +
+            String(today.getDate()).padStart(2, "0");
+
+        document.getElementById("pickup").min = date;
+        document.getElementById("return").min = date;
+    </script>
+
+</body>
+</html>
